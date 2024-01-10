@@ -16,7 +16,7 @@ import { get, set } from "idb-keyval";
 import { v4 as uuidv4 } from "uuid";
 import { Timer } from "@/types/core";
 
-export const Route = new FileRoute('/create/').createRoute({
+export const Route = new FileRoute("/create/").createRoute({
   component: CreateTimer,
 });
 

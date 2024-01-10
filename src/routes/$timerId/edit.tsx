@@ -1,6 +1,6 @@
 import { FileRoute } from "@tanstack/react-router";
 
-export const Route = new FileRoute('/$timerId/edit').createRoute({
+export const Route = new FileRoute("/$timerId/edit").createRoute({
   component: EditTimersComponent,
 });
 

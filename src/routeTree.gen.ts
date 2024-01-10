@@ -1,43 +1,43 @@
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes'
-import { Route as TimerIdEditImport } from './routes/$timerId/edit'
-import { Route as CreateIndexImport } from './routes/create'
-import { Route as TimerIdIndexImport } from './routes/$timerId'
+import { Route as rootRoute } from "./routes/__root"
+import { Route as IndexImport } from "./routes"
+import { Route as TimerIdEditImport } from "./routes/$timerId/edit"
+import { Route as CreateIndexImport } from "./routes/create"
+import { Route as TimerIdIndexImport } from "./routes/$timerId"
 
 const IndexRoute = IndexImport.update({
-  path: '/',
+  path: "/",
   getParentRoute: () => rootRoute,
 } as any)
 
 const TimerIdEditRoute = TimerIdEditImport.update({
-  path: '/$timerId/edit',
+  path: "/$timerId/edit",
   getParentRoute: () => rootRoute,
 } as any)
 
 const CreateIndexRoute = CreateIndexImport.update({
-  path: '/create/',
+  path: "/create/",
   getParentRoute: () => rootRoute,
 } as any)
 
 const TimerIdIndexRoute = TimerIdIndexImport.update({
-  path: '/$timerId/',
+  path: "/$timerId/",
   getParentRoute: () => rootRoute,
 } as any)
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
+    "/": {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/$timerId/': {
+    "/$timerId/": {
       preLoaderRoute: typeof TimerIdIndexImport
       parentRoute: typeof rootRoute
     }
-    '/create/': {
+    "/create/": {
       preLoaderRoute: typeof CreateIndexImport
       parentRoute: typeof rootRoute
     }
-    '/$timerId/edit': {
+    "/$timerId/edit": {
       preLoaderRoute: typeof TimerIdEditImport
       parentRoute: typeof rootRoute
     }
