@@ -141,25 +141,19 @@ export const TimerComponent: React.FC<TimerProps> = ({
 
   if (isMinimized) {
     return (
-      <div className="flex items-center justify-between fixed bottom-4 right-4 bg-secondary px-4 py-2 rounded-md">
-        <div className="flex gap-2 mr-8">
+      <div className="gap-4 sm:gap-8 flex flex-wrap items-center justify-center fixed top-0 right-0 sm:top-auto sm:bottom-4 sm:right-4 bg-secondary px-4 py-2 rounded-md">
+        <div className="flex gap-2">
           <p className="text-2xl font-bold uppercase">
             {time.hours.toString().padStart(2, "0")}
           </p>
 
-          <p className="text-2xl font-bold uppercase hidden md:block">:</p>
-          <p className="text-2xl font-bold uppercase md:hidden -mt-14 md:-mt-20">
-            ..
-          </p>
+          <p className="text-2xl font-bold uppercase">:</p>
 
           <p className="text-2xl font-bold uppercase">
             {time.minutes.toString().padStart(2, "0")}
           </p>
 
-          <p className="text-2xl font-bold uppercase hidden md:block">:</p>
-          <p className="text-2xl font-bold uppercase md:hidden -mt-14 md:-mt-20">
-            ..
-          </p>
+          <p className="text-2xl font-bold uppercase">:</p>
 
           <p className="text-2xl font-bold uppercase mt-0">
             {time.seconds.toString().padStart(2, "0")}
@@ -198,7 +192,26 @@ export const TimerComponent: React.FC<TimerProps> = ({
             </Tooltip>
           </TooltipProvider>
 
-          <div className="flex gap-2 grow">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                className={cn(
+                  buttonVariants({
+                    variant: "outline",
+                    className: "grow py-4",
+                  })
+                )}
+                onClick={resetTimer}
+              >
+                <TimerResetIcon className="w-5 h-5" />
+              </TooltipTrigger>
+              <TooltipContent className="bg-secondary">
+                Reset the timer
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
+          <Link to="/$timerId/edit" params={{ timerId: timer.id }}>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
@@ -208,56 +221,35 @@ export const TimerComponent: React.FC<TimerProps> = ({
                       className: "grow py-4",
                     })
                   )}
-                  onClick={resetTimer}
                 >
-                  <TimerResetIcon className="w-5 h-5" />
+                  <PencilIcon className="w-5 h-5" />
                 </TooltipTrigger>
                 <TooltipContent className="bg-secondary">
-                  Reset the timer
+                  Edit the timer
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
+          </Link>
 
-            <Link to="/$timerId/edit" params={{ timerId: timer.id }}>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger
-                    className={cn(
-                      buttonVariants({
-                        variant: "outline",
-                        className: "grow py-4",
-                      })
-                    )}
-                  >
-                    <PencilIcon className="w-5 h-5" />
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-secondary">
-                    Edit the timer
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </Link>
-
-            <Link to="/$timerId" params={{ timerId: timer.id }}>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger
-                    className={cn(
-                      buttonVariants({
-                        variant: "outline",
-                        className: "grow py-4",
-                      })
-                    )}
-                  >
-                    <MaximizeIcon className="w-5 h-5" />
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-secondary">
-                    Open the timer
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </Link>
-          </div>
+          <Link to="/$timerId" params={{ timerId: timer.id }}>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  className={cn(
+                    buttonVariants({
+                      variant: "outline",
+                      className: "grow py-4",
+                    })
+                  )}
+                >
+                  <MaximizeIcon className="w-5 h-5" />
+                </TooltipTrigger>
+                <TooltipContent className="bg-secondary">
+                  Open the timer
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Link>
         </div>
       </div>
     );
