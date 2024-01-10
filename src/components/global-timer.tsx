@@ -43,11 +43,18 @@ const GlobalTimer = () => {
 
   useEffect(() => {
     const unsub = router.subscribe("onResolved", (e) => {
+      console.log("resolved", timer?.id, e.toLocation.href);
+
       setIsMatch(e.toLocation.href === `/${timer?.id}`);
     });
 
     return unsub;
   }, [timer, router]);
+
+  useEffect(() => {
+    // @ts-expect-error matchRoute expect params, which is not needed here
+    setIsMatch(!!router.matchRoute({ to: "/$timerId" }));
+  }, [router, timer?.id]);
 
   return (
     <React.Fragment>
@@ -137,6 +144,7 @@ export const TimerComponent: React.FC<TimerProps> = ({
 
   useEffect(() => {
     setTime(timer.time);
+    pauseTimer();
   }, [timer.time]);
 
   if (isMinimized) {

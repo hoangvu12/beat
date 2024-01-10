@@ -1,5 +1,13 @@
 import { portalNode } from "@/components/global-timer";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useGlobalTimer } from "@/context/global-timer-context";
 import { timerQueryOptions } from "@/queries/timer";
 import { Timer } from "@/types/core";
@@ -38,14 +46,86 @@ export interface TimerProps {
 
 function TimerPage() {
   const timer = Route.useLoaderData()!;
-
-  const { setTimer } = useGlobalTimer();
+  const { timer: existingTimer, setTimer } = useGlobalTimer();
 
   React.useEffect(() => {
-    console.log("set timer", timer);
+    if (existingTimer) {
+      if (existingTimer.id !== timer.id) return;
+    }
 
     setTimer(timer);
-  }, [timer, setTimer]);
+  }, [timer, setTimer, existingTimer]);
 
-  return <portals.OutPortal isMinimized={false} node={portalNode} />;
+  const shouldAsk = !!existingTimer && existingTimer?.id !== timer.id;
+
+  return (
+    <React.Fragment>
+      {shouldAsk && (
+        <Dialog open>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Open new timer?</DialogTitle>
+              <DialogDescription>
+                You are about to open a new timer. The old timer will be paused.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div>
+              <p>
+                Current timer:{" "}
+                <span
+                  className="inline-block w-2 h-2 mr-1 rounded-md"
+                  style={{
+                    backgroundColor: existingTimer?.color,
+                  }}
+                ></span>
+                <span
+                  className="font-semibold"
+                  style={{
+                    color: existingTimer?.color,
+                  }}
+                >
+                  {existingTimer?.name}
+                </span>
+              </p>
+
+              <p>
+                New timer:{" "}
+                <span
+                  className="inline-block w-2 h-2 mr-1 rounded-md"
+                  style={{
+                    backgroundColor: timer?.color,
+                  }}
+                ></span>
+                <span
+                  className="font-semibold"
+                  style={{
+                    color: timer.color,
+                  }}
+                >
+                  {timer.name}
+                </span>
+              </p>
+            </div>
+
+            <DialogFooter>
+              <Link to="/$timerId" params={{ timerId: existingTimer!.id }}>
+                <Button variant="secondary">Open the current timer</Button>
+              </Link>
+
+              <Button
+                onClick={() => {
+                  setTimer(timer);
+                }}
+              >
+                Open the new timer
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      <portals.OutPortal isMinimized={false} node={portalNode} />
+    </React.Fragment>
+  );
 }
