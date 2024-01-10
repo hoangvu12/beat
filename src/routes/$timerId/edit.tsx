@@ -71,28 +71,28 @@ function EditTimersComponent() {
     }
 
     const existingTimers = await get("timers");
-    const timer = existingTimers.find(
-      (existingTimer: Timer) => existingTimer.id === timer.id
+    const existingTimer = existingTimers.find(
+      (existingTimer: Timer) => existingTimer.id === existingTimer.id
     );
 
-    if (!timer) {
+    if (!existingTimer) {
       return toast.error("Timer not found.");
     }
 
-    timer.name = name;
-    timer.time = time;
-    timer.color = color;
-    timer.volume = volume;
-    timer.isInterval = isInterval;
-    timer.file = file;
+    existingTimer.name = name;
+    existingTimer.time = time;
+    existingTimer.color = color;
+    existingTimer.volume = volume;
+    existingTimer.isInterval = isInterval;
+    existingTimer.file = file;
 
     await set("timers", existingTimers);
 
-    queryClient.invalidateQueries(timerQueryOptions(timer.id));
+    queryClient.invalidateQueries(timerQueryOptions(existingTimer.id));
 
     toast.success("Edit timer successfully!");
 
-    navigate({ to: "/$timerId", params: { timerId: timer.id } });
+    navigate({ to: "/$timerId", params: { timerId: existingTimer.id } });
   };
 
   return (
