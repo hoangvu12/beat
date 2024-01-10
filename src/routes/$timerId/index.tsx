@@ -11,6 +11,7 @@ import {
 import { useGlobalTimer } from "@/context/global-timer-context";
 import { timerQueryOptions } from "@/queries/timer";
 import { Timer } from "@/types/core";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { FileRoute, Link } from "@tanstack/react-router";
 import React from "react";
 import * as portals from "react-reverse-portal";
@@ -45,10 +46,15 @@ export interface TimerProps {
 }
 
 function TimerPage() {
-  const timer = Route.useLoaderData()!;
+  const timerId = Route.useParams().timerId;
+
+  const { data: timer } = useSuspenseQuery(timerQueryOptions(timerId));
+
   const { timer: existingTimer, setTimer, isRunning } = useGlobalTimer();
 
   React.useEffect(() => {
+    if (!timer) return;
+
     if (existingTimer) {
       if (existingTimer.id !== timer.id && isRunning) return;
     }
@@ -57,7 +63,7 @@ function TimerPage() {
   }, [timer, setTimer, existingTimer, isRunning]);
 
   const shouldAsk =
-    !!existingTimer && existingTimer?.id !== timer.id && isRunning;
+    !!existingTimer && existingTimer?.id !== timer?.id && isRunning;
 
   return (
     <React.Fragment>
@@ -101,10 +107,10 @@ function TimerPage() {
                 <span
                   className="font-semibold"
                   style={{
-                    color: timer.color,
+                    color: timer?.color,
                   }}
                 >
-                  {timer.name}
+                  {timer?.name}
                 </span>
               </p>
             </div>
@@ -116,6 +122,8 @@ function TimerPage() {
 
               <Button
                 onClick={() => {
+                  if (!timer) return;
+
                   setTimer(timer);
                 }}
               >

@@ -12,6 +12,7 @@ import { FileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { get, set } from "idb-keyval";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = new FileRoute("/$timerId/edit").createRoute({
   component: EditTimersComponent,
@@ -54,6 +55,8 @@ function EditTimersComponent() {
   const [file, setFile] = useState<File | null>(timer.file);
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const editTimer = async () => {
     if (!name) {
       return toast.error("Please enter a name.");
@@ -82,6 +85,8 @@ function EditTimersComponent() {
     timer.file = file;
 
     await set("timers", existingTimers);
+
+    queryClient.invalidateQueries(timerQueryOptions(timer.id));
 
     toast.success("Edit timer successfully!");
 
