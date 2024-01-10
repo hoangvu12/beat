@@ -1,9 +1,10 @@
 {
-  "name": "react-vite-ui",
+  "name": "beat",
   "private": true,
   "version": "0.2.1",
   "type": "module",
   "scripts": {
+    "start": "serve -s dist -l 4000",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
