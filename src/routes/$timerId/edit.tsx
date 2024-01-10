@@ -71,7 +71,9 @@ function EditTimersComponent() {
     }
 
     const existingTimers = await get("timers");
-    const timer = existingTimers.find((timer: Timer) => timer.id === timer.id);
+    const timer = existingTimers.find(
+      (existingTimer: Timer) => existingTimer.id === timer.id
+    );
 
     if (!timer) {
       return toast.error("Timer not found.");
