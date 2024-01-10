@@ -90,6 +90,7 @@ export const TimerComponent: React.FC<TimerProps> = ({
 
     audioRef.current.currentTime = 0;
     audioRef.current.play();
+    audioRef.current.volume = timer.volume;
   };
 
   const startTimer = () => {
