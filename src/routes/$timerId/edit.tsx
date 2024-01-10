@@ -4,7 +4,7 @@ import SoundUpload from "@/components/routes/create/sound-upload";
 import SoundVolume from "@/components/routes/create/sound-volume";
 import TimePicker from "@/components/routes/create/time-picker";
 import { Button } from "@/components/ui/button";
-import ColorPicker from "@/components/ui/color-picker";
+import ColorPicker from "@/components/routes/create/color-picker";
 import { Time } from "@/components/ui/time-picker";
 import { timerQueryOptions } from "@/queries/timer";
 import { Timer } from "@/types/core";
