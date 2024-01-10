@@ -4,7 +4,7 @@
   "version": "0.2.1",
   "type": "module",
   "scripts": {
-    "start": "serve -s dist -l 5000",
+    "start": "serve dist -s -n -L -p $PORT",
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
