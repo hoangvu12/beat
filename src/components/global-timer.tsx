@@ -30,6 +30,7 @@ export const portalNode = portals.createHtmlPortalNode<typeof TimerComponent>({
 export interface TimerProps {
   timer: Timer;
   isMinimized?: boolean;
+  onRun?: (isRunning: boolean) => void;
 }
 
 const GlobalTimer = () => {
@@ -39,7 +40,7 @@ const GlobalTimer = () => {
     // @ts-expect-error matchRoute expect params, which is not needed here
     !!router.matchRoute({ to: "/$timerId" })
   );
-  const { timer } = useGlobalTimer();
+  const { timer, setIsRunning } = useGlobalTimer();
 
   useEffect(() => {
     const unsub = router.subscribe("onResolved", (e) => {
@@ -59,7 +60,7 @@ const GlobalTimer = () => {
   return (
     <React.Fragment>
       <portals.InPortal node={portalNode}>
-        {timer && <TimerComponent timer={timer} />}
+        {timer && <TimerComponent onRun={setIsRunning} timer={timer} />}
       </portals.InPortal>
 
       {!isMatch && (
@@ -75,6 +76,7 @@ const GlobalTimer = () => {
 export const TimerComponent: React.FC<TimerProps> = ({
   timer,
   isMinimized = false,
+  onRun,
 }) => {
   const [time, setTime] = React.useState(timer.time);
   const [isRunning, setIsRunning] = React.useState(false);
@@ -147,6 +149,10 @@ export const TimerComponent: React.FC<TimerProps> = ({
     setTime(timer.time);
     pauseTimer();
   }, [timer.time]);
+
+  useEffect(() => {
+    onRun?.(isRunning);
+  }, [isRunning, onRun]);
 
   if (isMinimized) {
     return (

@@ -46,17 +46,18 @@ export interface TimerProps {
 
 function TimerPage() {
   const timer = Route.useLoaderData()!;
-  const { timer: existingTimer, setTimer } = useGlobalTimer();
+  const { timer: existingTimer, setTimer, isRunning } = useGlobalTimer();
 
   React.useEffect(() => {
     if (existingTimer) {
-      if (existingTimer.id !== timer.id) return;
+      if (existingTimer.id !== timer.id && isRunning) return;
     }
 
     setTimer(timer);
-  }, [timer, setTimer, existingTimer]);
+  }, [timer, setTimer, existingTimer, isRunning]);
 
-  const shouldAsk = !!existingTimer && existingTimer?.id !== timer.id;
+  const shouldAsk =
+    !!existingTimer && existingTimer?.id !== timer.id && isRunning;
 
   return (
     <React.Fragment>
