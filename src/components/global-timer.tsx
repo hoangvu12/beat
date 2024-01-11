@@ -86,10 +86,6 @@ export const TimerComponent: React.FC<TimerProps> = ({
   const audioRef = React.useRef<HTMLAudioElement>(new Audio());
 
   const playAudio = () => {
-    const audioUrl = URL.createObjectURL(timer.file);
-
-    audioRef.current.src = audioUrl;
-
     audioRef.current.currentTime = 0;
     audioRef.current.play();
     audioRef.current.volume = timer.volume;
@@ -153,6 +149,12 @@ export const TimerComponent: React.FC<TimerProps> = ({
   useEffect(() => {
     onRun?.(isRunning);
   }, [isRunning, onRun]);
+
+  useEffect(() => {
+    const audioUrl = URL.createObjectURL(timer.file);
+
+    audioRef.current.src = audioUrl;
+  }, [timer.id, timer.file]);
 
   if (isMinimized) {
     return (
