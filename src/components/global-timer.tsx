@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import React, { useEffect } from "react";
 import * as portals from "react-reverse-portal";
+import { Time } from "./ui/time-picker";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const portalNode = portals.createHtmlPortalNode<typeof TimerComponent>({
@@ -32,6 +33,10 @@ export interface TimerProps {
   isMinimized?: boolean;
   onRun?: (isRunning: boolean) => void;
 }
+
+const isTimeEmpty = (time: Time) => {
+  return time.hours === 0 && time.minutes === 0 && time.seconds === 0;
+};
 
 const GlobalTimer = () => {
   const router = useRouter();
@@ -92,6 +97,10 @@ export const TimerComponent: React.FC<TimerProps> = ({
   };
 
   const startTimer = () => {
+    if (isTimeEmpty(time)) {
+      setTime(timer.time);
+    }
+
     setIsRunning(true);
 
     countDownInterval.current = setInterval(() => {
