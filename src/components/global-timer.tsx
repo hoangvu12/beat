@@ -97,6 +97,11 @@ export const TimerComponent: React.FC<TimerProps> = ({
   };
 
   const startTimer = () => {
+    // Because the browser will not load this audio when the tab is inactive
+    // We have the load the audio first so that it can be played
+    const audioUrl = URL.createObjectURL(timer.file);
+    audioRef.current.src = audioUrl;
+
     if (isTimeEmpty(time)) {
       setTime(timer.time);
     }
@@ -158,14 +163,6 @@ export const TimerComponent: React.FC<TimerProps> = ({
   useEffect(() => {
     onRun?.(isRunning);
   }, [isRunning, onRun]);
-
-  useEffect(() => {
-    console.log("set timer audio", timer.file);
-
-    const audioUrl = URL.createObjectURL(timer.file);
-
-    audioRef.current.src = audioUrl;
-  }, [timer.file]);
 
   if (isMinimized) {
     return (
