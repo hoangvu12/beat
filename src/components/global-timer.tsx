@@ -151,10 +151,12 @@ export const TimerComponent: React.FC<TimerProps> = ({
   }, [isRunning, onRun]);
 
   useEffect(() => {
+    console.log("set timer audio", timer.file);
+
     const audioUrl = URL.createObjectURL(timer.file);
 
     audioRef.current.src = audioUrl;
-  }, [timer.id, timer.file]);
+  }, [timer.file]);
 
   if (isMinimized) {
     return (
