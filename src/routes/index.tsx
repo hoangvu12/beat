@@ -24,7 +24,7 @@ function Home() {
           <Button variant="secondary">
             <PlusIcon className="w-6 h-6" />
 
-            <p className="ml-2 text-base">Add timer</p>
+            <p className="ml-2 text-base hidden sm:block">Add timer</p>
           </Button>
         </Link>
       </div>
