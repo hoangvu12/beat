@@ -72,7 +72,7 @@ function EditTimersComponent() {
 
     const existingTimers = await get("timers");
     const existingTimer = existingTimers.find(
-      (existingTimer: Timer) => existingTimer.id === existingTimer.id
+      (existingTimer: Timer) => existingTimer.id === timer.id
     );
 
     if (!existingTimer) {
