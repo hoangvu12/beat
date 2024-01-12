@@ -23,6 +23,7 @@ const SoundVolume: React.FC<SoundVolumeProps> = ({ volume, onChange }) => {
           onValueChange={(value) => {
             onChange?.(value[0]);
           }}
+          value={[volume]}
         />
 
         <p className="ml-2 text-base font-medium">
