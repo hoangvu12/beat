@@ -99,7 +99,14 @@ export const TimerComponent: React.FC<TimerProps> = ({
   const startTimer = () => {
     // Because the browser will not load this audio when the tab is inactive
     // We have the load the audio first so that it can be played
-    const audioUrl = URL.createObjectURL(timer.file);
+    let audioUrl = "";
+
+    if (typeof timer.file === "string") {
+      audioUrl = timer.file;
+    } else {
+      audioUrl = URL.createObjectURL(timer.file);
+    }
+
     audioRef.current.src = audioUrl;
 
     if (isTimeEmpty(time)) {

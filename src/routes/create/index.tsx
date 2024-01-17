@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 import { get, set } from "idb-keyval";
 import { v4 as uuidv4 } from "uuid";
-import { Timer } from "@/types/core";
+import { SoundFile, Timer } from "@/types/core";
 
 export const Route = new FileRoute("/create/").createRoute({
   component: CreateTimer,
@@ -32,7 +32,7 @@ function CreateTimer() {
   const [color, setColor] = useState<string>(existingColors[0]);
   const [volume, setVolume] = useState<number>(1);
   const [isInterval, setIsInterval] = useState<boolean>(false);
-  const [file, setFile] = useState<File | null>(null);
+  const [soundFile, setSoundFile] = useState<SoundFile | null>(null);
   const navigate = useNavigate();
 
   const createTimer = async () => {
@@ -44,7 +44,7 @@ function CreateTimer() {
       return toast.error("Please pick time.");
     }
 
-    if (!file) {
+    if (!soundFile?.file) {
       return toast.error("Please upload a sound file.");
     }
 
@@ -57,7 +57,8 @@ function CreateTimer() {
       color,
       volume,
       isInterval,
-      file,
+      file: soundFile.file,
+      soundFile: soundFile,
     };
 
     await set("timers", [...(existingTimers || []), newTimer]);
@@ -89,7 +90,7 @@ function CreateTimer() {
       </div>
 
       <div>
-        <SoundUpload file={file} onChange={setFile} />
+        <SoundUpload soundFile={soundFile} onChange={setSoundFile} />
       </div>
 
       <div>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import ColorPicker from "@/components/routes/create/color-picker";
 import { Time } from "@/components/ui/time-picker";
 import { timerQueryOptions } from "@/queries/timer";
-import { Timer } from "@/types/core";
+import { SoundFile, Timer } from "@/types/core";
 import { FileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { get, set } from "idb-keyval";
 import { useState } from "react";
@@ -52,7 +52,7 @@ function EditTimersComponent() {
   const [color, setColor] = useState<string>(timer.color);
   const [volume, setVolume] = useState<number>(timer.volume);
   const [isInterval, setIsInterval] = useState<boolean>(timer.isInterval);
-  const [file, setFile] = useState<File | null>(timer.file);
+  const [soundFile, setSoundFile] = useState<SoundFile | null>(timer.soundFile);
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -66,11 +66,11 @@ function EditTimersComponent() {
       return toast.error("Please pick time.");
     }
 
-    if (!file) {
+    if (!soundFile) {
       return toast.error("Please upload a sound file.");
     }
 
-    const existingTimers = await get("timers");
+    const existingTimers = (await get("timers")) as Timer[];
     const existingTimer = existingTimers.find(
       (existingTimer: Timer) => existingTimer.id === timer.id
     );
@@ -84,7 +84,8 @@ function EditTimersComponent() {
     existingTimer.color = color;
     existingTimer.volume = volume;
     existingTimer.isInterval = isInterval;
-    existingTimer.file = file;
+    existingTimer.file = soundFile.file;
+    existingTimer.soundFile = soundFile;
 
     await set("timers", existingTimers);
 
@@ -117,7 +118,7 @@ function EditTimersComponent() {
       </div>
 
       <div>
-        <SoundUpload file={file} onChange={setFile} />
+        <SoundUpload soundFile={soundFile} onChange={setSoundFile} />
       </div>
 
       <div>

@@ -7,5 +7,13 @@ export interface Timer {
   color: string;
   volume: number;
   isInterval: boolean;
-  file: File;
+  // Backwards compatibility
+  file: File | string;
+  soundFile: SoundFile;
+}
+
+export interface SoundFile {
+  id: string;
+  name: string;
+  file: File | string;
 }
