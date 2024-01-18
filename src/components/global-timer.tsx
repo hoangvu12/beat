@@ -85,18 +85,24 @@ export const TimerComponent: React.FC<TimerProps> = ({
 }) => {
   const [time, setTime] = React.useState(timer.time);
   const [isRunning, setIsRunning] = React.useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = React.useState(false);
 
   const countDownInterval = React.useRef<NodeJS.Timeout>();
 
   const audioRef = React.useRef<HTMLAudioElement>(new Audio());
 
   const playAudio = () => {
-    audioRef.current.currentTime = 0;
     audioRef.current.play();
     audioRef.current.volume = timer.volume;
   };
 
-  const startTimer = () => {
+  const pauseAudio = () => {
+    audioRef.current.pause();
+
+    setIsAudioPlaying(false);
+  };
+
+  const setAudioSrc = () => {
     // Because the browser will not load this audio when the tab is inactive
     // We have the load the audio first so that it can be played
     let audioUrl = "";
@@ -108,6 +114,10 @@ export const TimerComponent: React.FC<TimerProps> = ({
     }
 
     audioRef.current.src = audioUrl;
+  };
+
+  const startTimer = () => {
+    setAudioSrc();
 
     if (isTimeEmpty(time)) {
       setTime(timer.time);
@@ -136,6 +146,8 @@ export const TimerComponent: React.FC<TimerProps> = ({
             seconds: 59,
           };
         } else {
+          audioRef.current.currentTime = 0;
+
           playAudio();
 
           if (timer.isInterval) {
@@ -170,6 +182,30 @@ export const TimerComponent: React.FC<TimerProps> = ({
   useEffect(() => {
     onRun?.(isRunning);
   }, [isRunning, onRun]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const handleEnded = () => {
+      setIsAudioPlaying(false);
+
+      console.log("HANDLE ENDED");
+    };
+
+    const handlePlay = () => {
+      setIsAudioPlaying(true);
+    };
+
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("pause", handleEnded);
+    audio.addEventListener("play", handlePlay);
+
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("pause", handleEnded);
+      audio.removeEventListener("play", handlePlay);
+    };
+  }, []);
 
   if (isMinimized) {
     return (
@@ -282,6 +318,37 @@ export const TimerComponent: React.FC<TimerProps> = ({
               </Tooltip>
             </TooltipProvider>
           </Link>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                onClick={() => {
+                  setAudioSrc();
+
+                  if (isAudioPlaying) {
+                    pauseAudio();
+                  } else {
+                    playAudio();
+                  }
+                }}
+                className={cn(
+                  buttonVariants({
+                    variant: "destructive",
+                    className: "grow py-4",
+                  })
+                )}
+              >
+                {isAudioPlaying ? (
+                  <PauseIcon className="w-5 h-5" />
+                ) : (
+                  <PlayIcon className="w-5 h-5" />
+                )}
+              </TooltipTrigger>
+              <TooltipContent className="bg-secondary">
+                {isAudioPlaying ? "Pause the sound" : "Play the sound"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     );
@@ -402,14 +469,18 @@ export const TimerComponent: React.FC<TimerProps> = ({
             </Tooltip>
           </TooltipProvider>
 
-          <Link to="/$timerId/edit" params={{ timerId: timer.id }}>
+          <Link
+            to="/$timerId/edit"
+            className="block"
+            params={{ timerId: timer.id }}
+          >
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
                   className={cn(
                     buttonVariants({
                       variant: "secondary",
-                      className: "grow py-4",
+                      className: "grow py-4 h-full",
                     })
                   )}
                 >
@@ -421,6 +492,37 @@ export const TimerComponent: React.FC<TimerProps> = ({
               </Tooltip>
             </TooltipProvider>
           </Link>
+
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger
+                onClick={() => {
+                  setAudioSrc();
+
+                  if (isAudioPlaying) {
+                    pauseAudio();
+                  } else {
+                    playAudio();
+                  }
+                }}
+                className={cn(
+                  buttonVariants({
+                    variant: "destructive",
+                    className: "grow py-4",
+                  })
+                )}
+              >
+                {isAudioPlaying ? (
+                  <PauseIcon className="w-5 h-5" />
+                ) : (
+                  <PlayIcon className="w-5 h-5" />
+                )}
+              </TooltipTrigger>
+              <TooltipContent className="bg-secondary">
+                {isAudioPlaying ? "Pause the sound" : "Play the sound"}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
     </div>
