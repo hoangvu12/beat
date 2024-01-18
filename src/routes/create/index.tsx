@@ -1,5 +1,5 @@
 import { Time } from "@/components/ui/time-picker";
-import { FileRoute, useNavigate } from "@tanstack/react-router";
+import { FileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import ColorPicker, {
   existingColors,
@@ -18,6 +18,7 @@ import { get, set } from "idb-keyval";
 import { v4 as uuidv4 } from "uuid";
 import { SoundFile, Timer } from "@/types/core";
 import OneTimeSwitch from "@/components/routes/create/one-time-switch";
+import { ArrowLeftIcon } from "lucide-react";
 
 export const Route = new FileRoute("/create/").createRoute({
   component: CreateTimer,
@@ -76,7 +77,15 @@ function CreateTimer() {
 
   return (
     <div className="py-20 min-h-[inherit] flex flex-col justify-center w-full space-y-8">
-      <h1 className="text-4xl font-semibold">Add timer</h1>
+      <Link to="/">
+        <Button variant="secondary" className="flex items-center">
+          <ArrowLeftIcon className="w-6 h-6 mr-2 shrink-0" />
+
+          <p className="text-xl">Go back</p>
+        </Button>
+      </Link>
+
+      <h1 className="text-4xl font-semibold">Create timer</h1>
 
       <div>
         <NameInput name={name} onNameChange={setName} />

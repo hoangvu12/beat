@@ -14,6 +14,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import OneTimeSwitch from "@/components/routes/create/one-time-switch";
+import { ArrowLeftIcon } from "lucide-react";
 
 export const Route = new FileRoute("/$timerId/edit").createRoute({
   component: EditTimersComponent,
@@ -101,6 +102,14 @@ function EditTimersComponent() {
 
   return (
     <div className="py-20 min-h-[inherit] flex flex-col justify-center w-full space-y-8">
+      <Link to="/">
+        <Button variant="secondary" className="flex items-center">
+          <ArrowLeftIcon className="w-6 h-6 mr-2 shrink-0" />
+
+          <p className="text-xl">Go back</p>
+        </Button>
+      </Link>
+
       <h1 className="text-4xl font-semibold">Edit timer</h1>
 
       <div>
