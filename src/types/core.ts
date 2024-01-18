@@ -7,6 +7,7 @@ export interface Timer {
   color: string;
   volume: number;
   isInterval: boolean;
+  isOneTime: boolean;
   // Backwards compatibility
   file: File | string;
   soundFile: SoundFile;

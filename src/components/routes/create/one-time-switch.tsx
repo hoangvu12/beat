@@ -2,14 +2,14 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import React from "react";
 
-interface IntervalSwitchProps {
-  isInterval: boolean;
-  onChange?: (isInterval: boolean) => void;
+interface OneTimeSwitchProps {
+  isOneTime: boolean;
+  onChange?: (isOneTime: boolean) => void;
   disabled?: boolean;
 }
 
-const IntervalSwitch: React.FC<IntervalSwitchProps> = ({
-  isInterval,
+const OneTimeSwitch: React.FC<OneTimeSwitchProps> = ({
+  isOneTime,
   onChange,
   disabled,
 }) => {
@@ -17,16 +17,16 @@ const IntervalSwitch: React.FC<IntervalSwitchProps> = ({
     <div className="flex items-center justify-between">
       <div>
         <Label htmlFor="interval-switch" className="block text-base">
-          Interval
+          One time
         </Label>
 
         <p className="text-base text-muted-foreground">
-          Repeat the timer after it ends
+          Delete the timer after it ends
         </p>
       </div>
 
       <Switch
-        checked={isInterval}
+        checked={isOneTime}
         onCheckedChange={(checked) => {
           onChange?.(checked);
         }}
@@ -36,4 +36,4 @@ const IntervalSwitch: React.FC<IntervalSwitchProps> = ({
   );
 };
 
-export default IntervalSwitch;
+export default OneTimeSwitch;

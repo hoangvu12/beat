@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { get, set } from "idb-keyval";
 import { v4 as uuidv4 } from "uuid";
 import { SoundFile, Timer } from "@/types/core";
+import OneTimeSwitch from "@/components/routes/create/one-time-switch";
 
 export const Route = new FileRoute("/create/").createRoute({
   component: CreateTimer,
@@ -32,7 +33,9 @@ function CreateTimer() {
   const [color, setColor] = useState<string>(existingColors[0]);
   const [volume, setVolume] = useState<number>(1);
   const [isInterval, setIsInterval] = useState<boolean>(false);
+  const [isOneTime, setIsOneTime] = useState<boolean>(false);
   const [soundFile, setSoundFile] = useState<SoundFile | null>(null);
+
   const navigate = useNavigate();
 
   const createTimer = async () => {
@@ -59,6 +62,7 @@ function CreateTimer() {
       isInterval,
       file: soundFile.file,
       soundFile: soundFile,
+      isOneTime,
     };
 
     await set("timers", [...(existingTimers || []), newTimer]);
@@ -98,7 +102,19 @@ function CreateTimer() {
       </div>
 
       <div>
-        <IntervalSwitch isInterval={isInterval} onChange={setIsInterval} />
+        <IntervalSwitch
+          isInterval={isInterval}
+          onChange={setIsInterval}
+          disabled={isOneTime}
+        />
+      </div>
+
+      <div>
+        <OneTimeSwitch
+          isOneTime={isOneTime}
+          onChange={setIsOneTime}
+          disabled={isInterval}
+        />
       </div>
 
       <Button onClick={createTimer}>

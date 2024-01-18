@@ -8,7 +8,7 @@ import {
 import { useGlobalTimer } from "@/context/global-timer-context";
 import { cn } from "@/lib/utils";
 import { Timer } from "@/types/core";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import {
   ArrowLeftIcon,
   MaximizeIcon,
@@ -20,6 +20,10 @@ import {
 import React, { useEffect } from "react";
 import * as portals from "react-reverse-portal";
 import { Time } from "./ui/time-picker";
+import { useQueryClient } from "@tanstack/react-query";
+import { get, set } from "idb-keyval";
+import { toast } from "sonner";
+import { timersQueryOptions } from "@/queries/timers";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const portalNode = portals.createHtmlPortalNode<typeof TimerComponent>({
@@ -86,8 +90,12 @@ export const TimerComponent: React.FC<TimerProps> = ({
   const [time, setTime] = React.useState(timer.time);
   const [isRunning, setIsRunning] = React.useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = React.useState(false);
+  const { setTimer } = useGlobalTimer();
 
   const countDownInterval = React.useRef<NodeJS.Timeout>();
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const audioRef = React.useRef<HTMLAudioElement>(new Audio());
 
@@ -100,6 +108,27 @@ export const TimerComponent: React.FC<TimerProps> = ({
     audioRef.current.pause();
 
     setIsAudioPlaying(false);
+  };
+
+  const deleteTimer = async () => {
+    const timers = (await get("timers")) as Timer[] | undefined;
+
+    if (!timers) return;
+
+    const newTimers = timers.filter((t) => t.id !== timer.id);
+
+    await set("timers", newTimers);
+
+    toast.success(
+      <span>
+        Successfully deleted <span className="font-semibold">{timer.name}</span>
+        .
+      </span>
+    );
+
+    setTimer(null);
+
+    queryClient.invalidateQueries(timersQueryOptions);
   };
 
   const setAudioSrc = () => {
@@ -149,6 +178,14 @@ export const TimerComponent: React.FC<TimerProps> = ({
           audioRef.current.currentTime = 0;
 
           playAudio();
+
+          if (timer.isOneTime) {
+            deleteTimer();
+
+            navigate({ to: "/", replace: true });
+
+            return timer.time;
+          }
 
           if (timer.isInterval) {
             return timer.time;

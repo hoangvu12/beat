@@ -13,6 +13,7 @@ import { get, set } from "idb-keyval";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import OneTimeSwitch from "@/components/routes/create/one-time-switch";
 
 export const Route = new FileRoute("/$timerId/edit").createRoute({
   component: EditTimersComponent,
@@ -52,7 +53,9 @@ function EditTimersComponent() {
   const [color, setColor] = useState<string>(timer.color);
   const [volume, setVolume] = useState<number>(timer.volume);
   const [isInterval, setIsInterval] = useState<boolean>(timer.isInterval);
+  const [isOneTime, setIsOneTime] = useState<boolean>(timer.isOneTime ?? false);
   const [soundFile, setSoundFile] = useState<SoundFile | null>(timer.soundFile);
+
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -126,7 +129,19 @@ function EditTimersComponent() {
       </div>
 
       <div>
-        <IntervalSwitch isInterval={isInterval} onChange={setIsInterval} />
+        <IntervalSwitch
+          isInterval={isInterval}
+          onChange={setIsInterval}
+          disabled={isOneTime}
+        />
+      </div>
+
+      <div>
+        <OneTimeSwitch
+          isOneTime={isOneTime}
+          onChange={setIsOneTime}
+          disabled={isInterval}
+        />
       </div>
 
       <Button onClick={editTimer}>
