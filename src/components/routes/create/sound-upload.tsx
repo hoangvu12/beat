@@ -30,7 +30,8 @@ interface SoundUploadProps {
   soundFile: SoundFile | null;
 }
 
-const defaultSoundFile: SoundFile = {
+// eslint-disable-next-line react-refresh/only-export-components
+export const defaultSoundFile: SoundFile = {
   id: "default",
   name: "Default notification sound",
   file: defaultSound,

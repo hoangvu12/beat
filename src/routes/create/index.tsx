@@ -6,7 +6,9 @@ import ColorPicker, {
 } from "@/components/routes/create/color-picker";
 import NameInput from "@/components/routes/create/name-input";
 import TimePicker from "@/components/routes/create/time-picker";
-import SoundUpload from "@/components/routes/create/sound-upload";
+import SoundUpload, {
+  defaultSoundFile,
+} from "@/components/routes/create/sound-upload";
 import SoundVolume from "@/components/routes/create/sound-volume";
 import IntervalSwitch from "@/components/routes/create/interval-switch";
 import { Button } from "@/components/ui/button";
@@ -34,7 +36,7 @@ function CreateTimer() {
   const [volume, setVolume] = useState<number>(1);
   const [isInterval, setIsInterval] = useState<boolean>(false);
   const [isOneTime, setIsOneTime] = useState<boolean>(false);
-  const [soundFile, setSoundFile] = useState<SoundFile | null>(null);
+  const [soundFile, setSoundFile] = useState<SoundFile>(defaultSoundFile);
 
   const navigate = useNavigate();
 
