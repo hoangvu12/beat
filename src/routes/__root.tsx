@@ -4,8 +4,6 @@ import { GlobalTimerProvider } from "@/context/global-timer-context";
 import { QueryClient } from "@tanstack/react-query";
 import { Outlet, rootRouteWithContext } from "@tanstack/react-router";
 
-import "/HackTimer.js?url";
-
 export const Route = rootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
