@@ -248,19 +248,19 @@ export const TimerComponent: React.FC<TimerProps> = ({
     return (
       <div className="gap-4 sm:gap-8 flex flex-wrap items-center justify-center fixed top-0 right-0 sm:top-auto sm:bottom-4 sm:right-4 bg-secondary px-4 py-2 rounded-md">
         <div className="flex gap-2">
-          <p className="text-2xl font-bold uppercase">
+          <p className="text-2xl font-bold uppercase tabular-nums">
             {time.hours.toString().padStart(2, "0")}
           </p>
 
-          <p className="text-2xl font-bold uppercase">:</p>
+          <p className="text-2xl font-bold uppercase tabular-nums">:</p>
 
-          <p className="text-2xl font-bold uppercase">
+          <p className="text-2xl font-bold uppercase tabular-nums">
             {time.minutes.toString().padStart(2, "0")}
           </p>
 
           <p className="text-2xl font-bold uppercase">:</p>
 
-          <p className="text-2xl font-bold uppercase mt-0">
+          <p className="text-2xl font-bold uppercase mt-0 tabular-nums">
             {time.seconds.toString().padStart(2, "0")}
           </p>
         </div>
@@ -422,29 +422,29 @@ export const TimerComponent: React.FC<TimerProps> = ({
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center md:gap-2">
-        <p className="text-8xl md:text-9xl font-bold uppercase">
+        <p className="text-8xl md:text-9xl font-bold uppercase tabular-nums">
           {time.hours.toString().padStart(2, "0")}
         </p>
 
-        <p className="text-8xl md:text-9xl font-bold uppercase hidden md:block">
+        <p className="text-8xl md:text-9xl font-bold uppercase hidden md:block tabular-nums">
           :
         </p>
-        <p className="text-8xl md:text-9xl font-bold uppercase md:hidden -mt-14 md:-mt-20">
+        <p className="text-8xl md:text-9xl font-bold uppercase md:hidden -mt-14 md:-mt-20 tabular-nums">
           ..
         </p>
 
-        <p className="text-8xl md:text-9xl font-bold uppercase">
+        <p className="text-8xl md:text-9xl font-bold uppercase tabular-nums">
           {time.minutes.toString().padStart(2, "0")}
         </p>
 
-        <p className="text-8xl md:text-9xl font-bold uppercase hidden md:block">
+        <p className="text-8xl md:text-9xl font-bold uppercase hidden md:block tabular-nums">
           :
         </p>
-        <p className="text-8xl md:text-9xl font-bold uppercase md:hidden -mt-14 md:-mt-20">
+        <p className="text-8xl md:text-9xl font-bold uppercase md:hidden -mt-14 md:-mt-20 tabular-nums">
           ..
         </p>
 
-        <p className="text-8xl md:text-9xl font-bold uppercase mt-0">
+        <p className="text-8xl md:text-9xl font-bold uppercase mt-0 tabular-nums">
           {time.seconds.toString().padStart(2, "0")}
         </p>
       </div>
