@@ -117,6 +117,8 @@ onmessage = function (event) {\
         }
       };
       worker.onmessage = function (event) {
+        console.log("ON MESSAGE");
+
         var data = event.data,
           fakeId = data.fakeId,
           request,
